@@ -33,7 +33,35 @@ def gerar_matriz_do_algoritmo(matriz):
                 
     return nova_matriz
     
-                
+def djkistra(file,v_origem):
+
+    file = np.asarray(file,dtype=np.int64)
+
+    nr_vertices = file.shape[0]
+    
+    mini = (2**64) - 1
+    
+    distancia = [mini] * nr_vertices
+    distancia[v_origem] = 0
+    
+    conj_spt = [False] * nr_vertices
+
+    for i in range(nr_vertices):
+        for j in range(nr_vertices):
+            if distancia[j] < mini and conj_spt[j] == False:
+                mini = conj_spt[j]
+                mini_index = j
+        
+        conj_spt[mini_index] = True
+
+        for k in range(nr_vertices):
+            if file[mini_index][k] > 0 and conj_spt[k] == False and \
+                distancia[k] > distancia[mini_index] + file[mini_index][k]:
+                distancia[k] = distancia[mini_index] + file[mini_index][k]
+    print("Vertice \t distancia da origem")
+    for l in range(nr_vertices):
+        print("%d\t%d" %(l,distancia[l]))
+
 def bellman(file,v_origem):
     file = np.asarray(file,dtype=np.int64)
     nr_vertices = file.shape[0]
@@ -63,6 +91,6 @@ def bellman(file,v_origem):
 
     
 bellman(lista2,0)
-
+djkistra(lista2,0)
     
                 
