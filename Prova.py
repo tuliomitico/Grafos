@@ -33,20 +33,45 @@ def gerar_matriz_do_algoritmo(matriz):
                 
     return nova_matriz
 
+def particao(v,esq,direi):
+    pivo = v[direi][2]
+    i = esq - 1
+    for j in range(esq,direi):
+        if v[j][2] < pivo:
+            i+=1
+            v[i],v[j] = v[j],v[i]
+    v[i+1],v[direi] = v[direi],v[i+1]
+    return i+1
+        
+
 def qsort(v,esq,direi):
     while esq < direi:
-        
+        p = particao(v,esq,direi)
+        if p < esq < direi - p:
+            qsort(v,esq,p - 1)
+            esq = p + 1
+        else:
+            qsort(v,p+1,direi)
+            direi = p - 1
+    return v
 #Algoritmos de Arvore Minima
 #----------------------------
 
-def kruskal(file,vertices):
+def kruskal(file):
 
     file = np.asarray(dtype=np.int64)
+    vertices = file.shape[0]
     file_adap = gerar_matriz_do_algoritmo(file)
+
     resultado=[]
 
     a,b = 0,0
 
+    file_adap = qsort(file_adap, 0, len(file_adap) - 1)
+
+    pai, rank = [],[]
+
+    for no in range(vertices):
 
 
 #Algoritmos de Arvore Geradora
@@ -110,5 +135,7 @@ def bellman(file,v_origem):
 
 #Chamadas das funções
 
+lista1 = gerar_matriz_do_algoritmo(matrizlocona)
+print(qsort(lista1,0,len(lista1)-1))
 bellman(lista2,0)
 djkistra(lista2,0)
