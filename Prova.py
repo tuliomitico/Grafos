@@ -32,7 +32,26 @@ def gerar_matriz_do_algoritmo(matriz):
                 nova_matriz.append([i,j,matriz[i][j]])
                 
     return nova_matriz
-    
+
+def qsort(v,esq,direi):
+    while esq < direi:
+        
+#Algoritmos de Arvore Minima
+#----------------------------
+
+def kruskal(file,vertices):
+
+    file = np.asarray(dtype=np.int64)
+    file_adap = gerar_matriz_do_algoritmo(file)
+    resultado=[]
+
+    a,b = 0,0
+
+
+
+#Algoritmos de Arvore Geradora
+#-----------------------------    
+
 def djkistra(file,v_origem):
 
     file = np.asarray(file,dtype=np.int64)
@@ -89,8 +108,7 @@ def bellman(file,v_origem):
     for i in range(nr_vertices): 
         print("%d\t\t%d" % (i, distancia[i])) 
 
-    
+#Chamadas das funções
+
 bellman(lista2,0)
 djkistra(lista2,0)
-    
-                
