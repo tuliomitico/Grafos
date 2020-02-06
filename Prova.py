@@ -42,7 +42,28 @@ def particao(v,esq,direi):
             v[i],v[j] = v[j],v[i]
     v[i+1],v[direi] = v[direi],v[i+1]
     return i+1
-        
+
+def procura(pai, i): 
+        if pai[i] == i: 
+            return i 
+        return procura(pai, pai[i]) 
+  
+     
+     
+def uniao(pai, rank, x, y): 
+        xraiz = procura(pai, x) 
+        yraiz = procura(pai, y) 
+   
+        if rank[xraiz] < rank[yraiz]: 
+            pai[xraiz] = yraiz 
+        elif rank[xraiz] > rank[yraiz]: 
+            pai[yraiz] = xraiz 
+  
+          
+         
+        else : 
+            pai[yraiz] = xraiz
+            rank[xraiz] += 1        
 
 def qsort(v,esq,direi):
     while esq < direi:
@@ -56,22 +77,70 @@ def qsort(v,esq,direi):
     return v
 #Algoritmos de Arvore Minima
 #----------------------------
+def prim(file):
+    file = np.asarray(file,dtype=np.int64)
+    vertices = file.shape[0]
+    
+    n = 2**64
+    key = [n] * vertices
+    pai = [None] * vertices
+    key[0] = 0
+    conj_spt= [False] * vertices
+
+    pai[0] = -1
+    
+    aux = n
+    for i in range(vertices):
+        for k in range(vertices):
+            if key[k] < aux and conj_spt[k] == False:
+                aux = key[k]
+                min_index = k
+    
+        conj_spt[min_index]
+        for j in range(vertices):
+             if file[min_index][j] > 0 and conj_spt[j] == False and key[j] > file[min_index][j]: 
+                        key[j] = file[min_index][j] 
+                        pai[j] = min_index 
+
+    print ("Arestas \t Custo")
+    for i in range(1, vertices): 
+        print (i, "-", pai[i], "\t", file[i][ pai[i] ] )
+
 
 def kruskal(file):
 
-    file = np.asarray(dtype=np.int64)
+    file = np.asarray(file,dtype=np.int64)
     vertices = file.shape[0]
     file_adap = gerar_matriz_do_algoritmo(file)
 
     resultado=[]
 
-    a,b = 0,0
+    i,e = 0,0
 
     file_adap = qsort(file_adap, 0, len(file_adap) - 1)
 
     pai, rank = [],[]
 
     for no in range(vertices):
+        pai.append(no)
+        rank.append(0)
+
+    while e < vertices - 1:
+
+        a,b,c = file_adap[i]
+        i+=1
+        x,y = procura(pai,a),procura(pai,b)
+
+        if x != y:
+            e+=1
+            resultado.append([a,b,c])
+            uniao(pai,rank,x,y)
+    
+    print ("Arvore Geradore Minima")
+    for a,v,custo  in resultado: 
+        
+        print ("%d -- %d == %d" % (a,v,custo))
+
 
 
 #Algoritmos de Arvore Geradora
@@ -135,7 +204,7 @@ def bellman(file,v_origem):
 
 #Chamadas das funções
 
-lista1 = gerar_matriz_do_algoritmo(matrizlocona)
-print(qsort(lista1,0,len(lista1)-1))
 bellman(lista2,0)
 djkistra(lista2,0)
+kruskal(lista2)
+prim(lista2)
